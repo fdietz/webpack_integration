@@ -13,14 +13,14 @@
 // to also remove its path from "config.paths.watched".
 //import "deps/phoenix_html/web/static/js/phoenix_html"
 import "phoenix_html"
-import "phoenix"
+//import "phoenix"
 
 // Import local files
 //
 // Local files can be imported directly using relative
 // paths "./socket" or full ones "web/static/js/socket".
 
-// import socket from "./socket"
+import socket from "./socket"
 //
 
 class Test {
