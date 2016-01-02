@@ -1,5 +1,26 @@
+var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var CopyWebPackPlugin = require("copy-webpack-plugin");
+
+var env = process.env.MIX_ENV || 'dev'
+var prod = env === 'prod'
+
+var plugins = [
+  new ExtractTextPlugin("css/app.css"),
+  new CopyWebPackPlugin([
+    { from: "./web/static/assets" },
+    { from: "./deps/phoenix_html/web/static/js/phoenix_html.js",
+      to: "js/phoenix_html.js"
+    },
+    { from: "./deps/phoenix/web/static/js/phoenix.js",
+      to: "js/phoenix.js"
+    }
+  ])
+];
+
+if (prod) {
+  plugins.push(new webpack.optimize.UglifyJsPlugin())
+}
 
 module.exports = {
   devtool: "source-map",
@@ -35,21 +56,18 @@ module.exports = {
         test: /\.scss$/,
         loader: ExtractTextPlugin.extract(
           "style",
-          "css!sass?includePaths[]=" + __dirname + "/node_modules"
+          "css!sass?includePaths[]=" + __dirname + "/node_modules!autoprefixer?browsers=last 2 versions"
         )
+      },
+      {
+        test: /\.(png|jpg|jpeg|gif|svg)$/,
+        loader: 'url?limit=10000'
+      },
+      {
+        test: /\.woff$/,
+        loader: 'url?limit=100000'
       }
     ]
   },
-  plugins: [
-    new ExtractTextPlugin("css/app.css"),
-    new CopyWebPackPlugin([
-      { from: "./web/static/assets" },
-      { from: "./deps/phoenix_html/web/static/js/phoenix_html.js",
-        to: "js/phoenix_html.js"
-      },
-      { from: "./deps/phoenix/web/static/js/phoenix.js",
-        to: "js/phoenix.js"
-      }
-    ])
-  ]
+  plugins: plugins
 }
