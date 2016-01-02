@@ -35,7 +35,8 @@ module.exports = {
     modulesDirectories: [__dirname + "/web/static/js"],
     alias: {
       phoenix_html: __dirname + "/deps/phoenix_html/web/static/js/phoenix_html.js",
-      phoenix: __dirname + "/deps/phoenix/web/static/js/phoenix.js"
+      phoenix: __dirname + "/deps/phoenix/web/static/js/phoenix.js",
+      normalize: __dirname + "/node_modules/normalize.css/normalize.css"
     }
   },
   module: {
@@ -49,11 +50,7 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract("style", "css")
-      },
-      {
-        test: /\.scss$/,
+        test: /\.s?css$/,
         loader: ExtractTextPlugin.extract(
           "style",
           "css!sass?includePaths[]=" + __dirname + "/node_modules!autoprefixer?browsers=last 2 versions"
